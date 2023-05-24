@@ -1,12 +1,11 @@
-import { useNavigation } from '@react-navigation/core';
-import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useRef, useState } from 'react';
 import { TextInput } from 'react-native';
-
-import { Background } from '../../components/Background';
-import { Card } from '../../components/Card';
+import { useNavigation } from '@react-navigation/core';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 import { useRepositories } from '../../hooks/useRepositories';
+import { Background } from '../../components/Background';
+import { Card } from '../../components/Card';
 
 import {
   Container,
@@ -37,22 +36,12 @@ export function Dashboard() {
   const { addRepository, repositories } = useRepositories();
 
   function handleAddRepository() {
-    /**
-     * TODO: 
-     * - call addRepository function sending inputText value;
-     * - clean inputText value.
-     */
+    addRepository(inputText);
+    setInputText('');
   }
 
   function handleRepositoryPageNavigation(id: number) {
-    /**
-     * TODO - navigate to the Repository screen sending repository id.
-     * Remember to use the correct prop name (repositoryId) to the repositoy id:
-     * 
-     * navigate(SCREEN NAME, {
-     *  repositoryId: id of the repository
-     * })
-     */
+    navigate('Repository', { repositoryId: id });
   }
 
   return (
@@ -66,11 +55,7 @@ export function Dashboard() {
               ref={inputRef}
               placeholder="Digite aqui 'usuário/repositório'"
               value={inputText}
-              /**
-               * TODO - update inputText value when input text value 
-               * changes:
-               * onChangeText={YOUR CODE HERE}
-               */
+              onChangeText={setInputText}
               onSubmitEditing={handleAddRepository}
               returnKeyType="send"
               autoCapitalize='none'
@@ -80,11 +65,7 @@ export function Dashboard() {
             <InputButton
               testID="input-button"
               onPress={handleAddRepository}
-              /**
-               * TODO - ensure to disable button when inputText is 
-               * empty (use disabled prop to this):
-               * disabled={CONDITION HERE}
-               */
+              disabled={!inputText.trim()}
             >
               <Icon name="search" size={20} />
             </InputButton>
